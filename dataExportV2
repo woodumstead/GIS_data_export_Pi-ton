@@ -1,0 +1,59 @@
+
+import arcpy
+import csv
+import os
+
+# ------------------------------------------
+# USER INPUTS – EDIT THESE
+# ------------------------------------------
+
+# 1) Structure layer / feature class
+# If 'structure' is a layer in your MXD, this can be just "structure"
+# Otherwise, use full path, like r"C:\path\to\your.gdb\structure"
+structure_fc = "structure"
+
+# 2) Field names – EXACTLY as they appear in the attribute table
+id_field  = "OBJECTID"   # e.g., "STRUCTURE_ID", "POLE_ID", etc.
+lat_field = "latitude"   # e.g., "LATITUDE", "Lat"
+lon_field = "longitude"  # e.g., "LONGITUDE", "Long"
+
+# 3) Output CSV file (Excel can open this)
+out_csv = r"C:\temp\structure_lat_long.csv"   # make sure folder exists
+
+# ------------------------------------------
+# MAIN LOGIC – NO NEED TO EDIT BELOW
+# ------------------------------------------
+
+arcpy.env.overwriteOutput = True
+
+# Check that fields exist
+fields = [f.name for f in arcpy.ListFields(structure_fc)]
+missing = []
+for f in [id_field, lat_field, lon_field]:
+    if f not in fields:
+        missing.append(f)
+
+if missing:
+    raise ValueError("These fields were not found in {}: {}".format(structure_fc, ", ".join(missing)))
+
+# Prepare CSV
+folder = os.path.dirname(out_csv)
+if folder and not os.path.exists(folder):
+    raise ValueError("Output folder does not exist: {}".format(folder))
+
+print("Exporting fields {} from {} to: {}".format(
+    [id_field, lat_field, lon_field], structure_fc, out_csv))
+
+with open(out_csv, mode="w", newline="") as f:
+    writer = csv.writer(f)
+
+    # Write header row
+    writer.writerow([id_field, lat_field, lon_field])
+
+    # Use SearchCursor to iterate features
+    with arcpy.da.SearchCursor(structure_fc, [id_field, lat_field, lon_field]) as cursor:
+        for row in cursor:
+            writer.writerow(row)
+
+print("CSV export complete!")
+print("File created at: {}".format(out_csv))
