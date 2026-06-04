@@ -19,7 +19,7 @@ lon_field = "longitude"
 id_field = "OBJECTID"   # <-- change if you have a better unique ID
 
 ➡️➡️➡️➡️# 4) Output Excel file
-out_excel = r"C:\temp\structure_lat_long.xlsx"   # make sure this folder exists ⬅️⬅️⬅️⬅️
+out_excel = r" path goes here "   # make sure this folder exists ⬅️⬅️⬅️⬅️
 
 # -------------------------------------------------
 # MAIN LOGIC – YOU SHOULDN'T NEED TO EDIT BELOW
