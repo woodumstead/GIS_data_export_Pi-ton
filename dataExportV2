@@ -18,7 +18,7 @@ lat_field = "latitude"   # e.g., "LATITUDE", "Lat"
 lon_field = "longitude"  # e.g., "LONGITUDE", "Long"
 
 # 3) Output CSV file (Excel can open this)
-out_csv = r"C:\FuturaData\LATxLONG_Pole_Data\structure_lat_long.csv"   # make sure folder exists
+out_csv = r"Drive/API or Path goes here"   # make sure folder exists
 
 # ------------------------------------------
 # MAIN LOGIC – NO NEED TO EDIT BELOW
